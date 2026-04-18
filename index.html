@@ -480,7 +480,7 @@
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
-  <script src="data.js"></script>
+  <script src="data.js" onerror="console.error('data.js加载失败！请刷新页面重试')"></script>
   <script>
     // ========== 全局状态 ==========
     let filterPersonal = true
@@ -493,6 +493,13 @@
     // ========== 初始化 ==========
     function init() {
       const data = window.PRICE_DATA || []
+
+      if (!data || data.length === 0) {
+        document.getElementById('totalCount').textContent = '加载失败'
+        console.error('数据加载失败！请检查网络后刷新页面重试。')
+        return
+      }
+
       const personal = data.filter(d => d.source === 'personal').length
       const company = data.filter(d => d.source === 'company').length
 
