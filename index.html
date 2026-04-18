@@ -257,6 +257,7 @@
 
     .source-tag.personal { background: #4ecdc4; color: #fff; }
     .source-tag.company { background: #ff6b6b; color: #fff; }
+    .source-tag.region { background: #9b59b6; color: #fff; }
 
     .item-body {
       display: flex;
@@ -431,6 +432,9 @@
       <div class="filter-btn active" id="filterCompany" onclick="toggleFilter('company')">
         <span class="icon">🏢</span>公司定额库
       </div>
+      <div class="filter-btn active" id="filterRegion" onclick="toggleFilter('personal_region')">
+        <span class="icon">📋</span>区域联采库
+      </div>
     </div>
 
     <!-- 热门搜索 -->
@@ -489,6 +493,7 @@
     // ========== 全局状态 ==========
     let filterPersonal = true
     let filterCompany = true
+    let filterRegion = true
     let currentResults = []
     let pageSize = 50
     let currentPage = 1
@@ -547,6 +552,7 @@
         // 筛选来源
         if (!filterPersonal && item.source === 'personal') return false
         if (!filterCompany && item.source === 'company') return false
+        if (!filterRegion && item.source === 'personal_region') return false
         return true
       })
 
@@ -616,8 +622,8 @@
           <div class="result-item">
             <div class="item-header">
               <div class="item-name">${escapeHtml(item.name)}</div>
-              <span class="source-tag ${item.source === 'personal' ? 'personal' : 'company'}">
-                ${item.source === 'personal' ? '个人库' : '公司库'}
+              <span class="source-tag ${item.source === 'personal' ? 'personal' : item.source === 'personal_region' ? 'region' : 'company'}">
+                ${item.source === 'personal' ? '个人库' : item.source === 'personal_region' ? '区域联采' : '公司库'}
               </span>
             </div>
             <div class="item-body">
@@ -665,12 +671,15 @@
     // ========== 筛选 ==========
     function toggleFilter(type) {
       if (type === 'personal') filterPersonal = !filterPersonal
-      else filterCompany = !filterCompany
+      else if (type === 'company') filterCompany = !filterCompany
+      else if (type === 'personal_region') filterRegion = !filterRegion
 
       document.getElementById('filterPersonal').className =
         'filter-btn' + (filterPersonal ? ' active' : '')
       document.getElementById('filterCompany').className =
         'filter-btn' + (filterCompany ? ' active' : '')
+      document.getElementById('filterRegion').className =
+        'filter-btn' + (filterRegion ? ' active' : '')
 
       // 重新搜索
       const kw = document.getElementById('searchInput').value.trim()
