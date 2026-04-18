@@ -525,7 +525,7 @@
       currentPage = 1
       const results = searchData(keyword)
       currentResults = results
-      renderResults(results, true)
+      renderResults(keyword, results, true)
 
       // 隐藏热门搜索，显示历史
       document.getElementById('hotSection').style.display = 'none'
@@ -558,7 +558,7 @@
       return filtered
     }
 
-    function renderResults(results, isNew) {
+    function renderResults(keyword, results, isNew) {
       const list = document.getElementById('resultList')
       const stats = document.getElementById('resultStats')
       const loadMore = document.getElementById('loadMore')
@@ -638,7 +638,8 @@
 
     function loadMore() {
       currentPage++
-      renderResults(currentResults, false)
+      const kw = document.getElementById('searchInput').value.trim()
+      renderResults(kw, currentResults, false)
     }
 
     function hotSearch(keyword) {
@@ -657,10 +658,10 @@
         'filter-btn' + (filterCompany ? ' active' : '')
 
       // 重新搜索
-      const keyword = document.getElementById('searchInput').value.trim()
-      if (keyword) {
-        currentResults = searchData(keyword)
-        renderResults(currentResults, true)
+      const kw = document.getElementById('searchInput').value.trim()
+      if (kw) {
+        currentResults = searchData(kw)
+        renderResults(kw, currentResults, true)
       }
     }
 
