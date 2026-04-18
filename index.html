@@ -266,9 +266,13 @@
 
     .item-price { display: flex; align-items: center; gap: 6px; }
     .item-unit { display: flex; align-items: center; gap: 6px; }
+    .item-project { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+    .item-contract { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
 
     .item-label { font-size: 13px; color: #888; }
-    .item-value { font-size: 16px; font-weight: bold; }
+    .item-value { font-size: 14px; font-weight: bold; }
+    .item-project .item-value { color: #4ecdc4; }
+    .item-contract .item-value { color: #95a5a6; font-weight: normal; font-size: 12px; }
     .price-val { color: #ff9500; }
     .unit-val { color: #555; }
 
@@ -599,6 +603,13 @@
 
         const copyText = `${item.name} | ${item.unit} | ${priceText}`
 
+        const projectText = item.projects && item.projects.length > 0
+          ? `<div class="item-project"><span class="item-label">项目：</span><span class="item-value">${item.projects.length > 1 ? item.projects.length + '个项目' : item.projects[0]}</span></div>`
+          : ''
+        const contractText = item.contracts && item.contracts.length > 0
+          ? `<div class="item-contract"><span class="item-label">合同：</span><span class="item-value">${item.contracts[0]}${item.contracts.length > 1 ? ' 等' + item.contracts.length + '份' : ''}</span></div>`
+          : ''
+
         return `
           <div class="result-item">
             <div class="item-header">
@@ -616,6 +627,8 @@
                 <span class="item-label">单位：</span>
                 <span class="item-value unit-val">${escapeHtml(item.unit)}</span>
               </div>
+              ${projectText}
+              ${contractText}
             </div>
             <div class="item-footer">
               <span class="match-tag ${matchType}">${matchType === 'exact' ? '🎯 精准匹配' : '🔎 模糊匹配'}</span>
